@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { CarWriter } from "@ipld/car/writer";
+import React, { useState } from "react";
 import { importer } from "ipfs-unixfs-importer";
 import browserReadableStreamToIt from "browser-readablestream-to-it";
+import axios from "axios";
+import { CarWriter } from "@ipld/car";
+import * as IPFS from "ipfs-core";
+
+// converting json to .car (content addressable format)
 
 const Upload = () => {
   const [files, setFiles] = useState([]);
   const [rootCid, setRootCid] = useState();
   const [carUrl, setCarUrl] = useState();
+  const [data, setData] = useState();
+  const [main, setMain] = useState();
 
   const onFileInput = (setFiles, evt) => {
     evt.preventDefault();
@@ -24,16 +30,17 @@ const Upload = () => {
 
   const handleCustom = () => {
     const metadata = {
-      name: "First ERC-1155 Token",
-      desc: "This is my first ever ERC-1155 Token",
-      image: "uri",
-      // image: imageIpfsHash ? imageIpfsHash : localStorage.getItem("imageHash")
+      name: "fivee",
+      desc: "this is eee",
+      image:
+        "https://ipfs.io/ipfs/bafkreiftqutqqv7h4zha5o7b5mjlielhghqynkgioq42f5aqbwzsil6xvy",
     };
     var type = "application/json";
-    var filename01 = "abc.txt";
+    var filename01 = "105.json";
     var fd = new FormData();
-    var file = new File([metadata], filename01, { type: type }); //add filename here
-    fd.append("file01", file);
+    var file = new File([JSON.stringify(metadata)], filename01, { type: type }); //add filename here
+    console.log(main, "mainn");
+    fd.append("file", file);
     const files = [];
 
     files.push(file);
@@ -41,7 +48,7 @@ const Upload = () => {
     setFiles(files);
   };
 
-  console.log(files);
+  console.log(files[0]?.name);
 
   const createCarBlob = async (files) => {
     if (!files || !files.length) return;
@@ -55,8 +62,6 @@ const Upload = () => {
     const car = new Blob(carParts, {
       type: "application/car",
     });
-    console.log(root, "root");
-
     return { root, car };
   };
 
@@ -121,14 +126,36 @@ const Upload = () => {
     }
   };
 
-  console.log(carUrl, "car url");
+  //   console.log(carUrl, "car url");
   console.log(rootCid, "root cid");
+
+  const toFile = async () => {
+    const ipfs = await IPFS.create();
+    const result = await ipfs.cat(cid);
+    console.log(result, "ress");
+  };
+
+  const uploadCarToIpfs = async () => {
+    const response = await axios.post("https://api.nft.storage/upload", "", {
+      headers: {
+        "Content-Type": "application/car",
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDcxNDc5OTgxMjZGMzAwQmMxQmMwYUViNkNlZTFmMkZiY0QyYUY4YjAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1OTUxMTc5NTcxOSwibmFtZSI6InRlc3RpbmcifQ.awUqr9yysVB7j2jb3hpwAsPRDc9piO0eswQMVUzGLOk`,
+      },
+    });
+    console.log(response, "uploading response");
+  };
 
   return (
     <div>
       <input type="file" multiple onChange={onFileInput.bind(null, setFiles)} />
       <button onClick={() => handleCreate()}>Create</button>
       <button onClick={() => handleCustom()}>Custom</button>
+      <button onClick={() => uploadCarToIpfs()}>Upload car</button>
+      <a href={carUrl} download={`${rootCid}.car`}>
+        Click to download
+      </a>
+
+      <button onClick={() => toFile()}>toFile</button>
     </div>
   );
 };

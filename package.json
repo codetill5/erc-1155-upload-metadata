@@ -10,9 +10,16 @@
   },
   "dependencies": {
     "@ipld/car": "^2.1.0",
+    "axios": "^0.27.2",
+    "blockstore-core": "^1.0.5",
     "browser-readablestream-to-it": "^1.0.2",
-    "ipfs-unixfs-importer": "https://gitpkg.now.sh/ipfs/js-ipfs-unixfs/packages/ipfs-unixfs-importer?js-dag-pb-with-dist",
+    "cid-tool": "^3.0.0",
+    "encode-utf8": "^2.0.0",
     "fs": "^0.0.1-security",
+    "ipfs-core": "^0.15.4",
+    "ipfs-unixfs-exporter": "^7.0.11",
+    "ipfs-unixfs-importer": "https://gitpkg.now.sh/ipfs/js-ipfs-unixfs/packages/ipfs-unixfs-importer?js-dag-pb-with-dist",
+    "multiformats": "^9.7.1",
     "next": "12.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"
