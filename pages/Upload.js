@@ -139,7 +139,7 @@ const Upload = () => {
     const response = await axios.post("https://api.nft.storage/upload", "", {
       headers: {
         "Content-Type": "application/car",
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDcxNDc5OTgxMjZGMzAwQmMxQmMwYUViNkNlZTFmMkZiY0QyYUY4YjAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1OTUxMTc5NTcxOSwibmFtZSI6InRlc3RpbmcifQ.awUqr9yysVB7j2jb3hpwAsPRDc9piO0eswQMVUzGLOk`,
+        Authorization: `Bearer`,
       },
     });
     console.log(response, "uploading response");
